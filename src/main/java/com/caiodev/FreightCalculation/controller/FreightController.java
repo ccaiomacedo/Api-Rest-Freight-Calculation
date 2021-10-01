@@ -22,9 +22,13 @@ public class FreightController {
         return ResponseEntity.ok().body(freightService.insert(freightRequestDTO));
     }
 
-    @RequestMapping(value = "/{cepOrigem}/{cepDestino}/{nomeDestinatario}",method = RequestMethod.GET)
-    public ResponseEntity<List<FreightResponseDTO>> findFreight(@PathVariable String cepOrigem,@PathVariable String cepDestino,@PathVariable String nomeDestinatario){
-        return ResponseEntity.ok().body(freightService.findFreight(cepOrigem,cepDestino,nomeDestinatario));
+    @RequestMapping(value = "/{nomeDestinatario}",method = RequestMethod.GET)
+    public ResponseEntity<List<FreightResponseDTO>> findByName(@PathVariable String nomeDestinatario){
+        return ResponseEntity.ok().body(freightService.findByName(nomeDestinatario));
+    }
+    @RequestMapping(value = "/{cepOrigem}/{cepDestino}",method = RequestMethod.GET)
+    public ResponseEntity<List<FreightResponseDTO>> findByCep(@PathVariable String cepOrigem,@PathVariable String cepDestino){
+        return ResponseEntity.ok().body(freightService.findByCep(cepOrigem,cepDestino));
     }
 
 

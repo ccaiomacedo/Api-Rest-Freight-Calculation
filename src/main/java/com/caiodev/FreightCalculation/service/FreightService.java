@@ -38,13 +38,23 @@ public class FreightService {
     }
 
     @Transactional
-    public List<FreightResponseDTO> findFreight(String cepOrigem,String cepDestino,String nomeDestinatario){
-        Optional<Freight> result = freightRepository.findByFreight(cepOrigem,cepDestino,nomeDestinatario);
+    public List<FreightResponseDTO> findByName(String nomeDestinatario){
+        List<Freight> result = freightRepository.findByNomeDestinatarioIgnoreCase(nomeDestinatario);
 
         if(result.isEmpty()){
-            throw new FreightNotFoundException("Frete não encontrado!");
+            throw new FreightNotFoundException("Nome não encontrado!");
         }
-        result.ifPresent(x -> x.setDataConsulta(LocalDateTime.now()));
+        result.forEach(x -> x.setDataConsulta(LocalDateTime.now()));
+        return result.stream().map(x -> new FreightResponseDTO(x)).collect(Collectors.toList());
+    }
+    @Transactional
+    public List<FreightResponseDTO> findByCep(String cepOrigem,String cepDestino){
+        List<Freight> result = freightRepository.findByCep(cepOrigem,cepDestino);
+
+        if(result.isEmpty()){
+            throw new FreightNotFoundException("Cep não encontrado!");
+        }
+        result.forEach(x -> x.setDataConsulta(LocalDateTime.now()));
         return result.stream().map(x -> new FreightResponseDTO(x)).collect(Collectors.toList());
     }
 

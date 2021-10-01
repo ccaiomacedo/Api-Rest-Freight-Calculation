@@ -5,12 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface FreightRepository extends JpaRepository<Freight, Integer> {
 
-    @Query("SELECT obj FROM Freight obj WHERE obj.cepOrigem = :cepOrigem AND " + "obj.cepDestino = :cepDestino AND "
-            + "obj.nomeDestinatario = :nomeDestinatario ")
-    Optional<Freight> findByFreight(String cepOrigem, String cepDestino, String nomeDestinatario);
+    List<Freight> findByNomeDestinatarioIgnoreCase(String name);
+
+    @Query("SELECT obj FROM Freight obj WHERE obj.cepOrigem = :cepOrigem AND " + "obj.cepDestino = :cepDestino")
+    List<Freight> findByCep(String cepOrigem, String cepDestino);
+
 }
